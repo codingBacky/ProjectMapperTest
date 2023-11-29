@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shard.mapper.OrdersMapper">
+    
+
+<!-- pay로 넘어갈때 주문, 주문상세 생성 -->
+    <insert id="orderInsert">
+	    insert into orders(totalPrice,deliverZipCode, userDeliverAddr,  email, deliverDetailAddr, deliverName, deliverPhone)
+	    values (#{totalPrice}, #{deliverZipCode}, #{userDeliverAddr}, #{email}, #{deliverDetailAddr}, #{deliverName}, #{deliverPhone})
+	</insert>
+<!-- 	마지막으로 insert한 orderId	 -->
+	<select id="getLastInsertId" resultType="int">
+        SELECT LAST_INSERT_ID()
+    </select>
+	<insert id="detailOrderInsert">
+		insert into detailorder(itemNum, cnt, size, orderId) values(#{itemNum},#{cnt},#{size},#{orderId})
+	</insert>
+	
+	
+    <!-- 주문자정보, 기본배송지정보, 주문상품 list read-->
+	<select id="getCustomer" resultType="com.shard.domain.ShardMemberVO">
+		select username, phone from customer where email = #{email}
+	</select>
+<!-- 	<select id="getOrder" resultType="com.shard.domain.OrdersVO">
+		select * from orders where email = #{email}
+	</select> -->
+	
+	
+	<!-- <select id="getDetailOrder" resultType="com.shard.domain.DetailOrderVO">
+		select itemNum from detailorder where orderId = #{orderId}
+	</select>
+	<select id="getDetailOrderItem" resultType="com.shard.domain.ItemVO">
+	    select * from item
+	    where itemNum IN
+    <foreach collection="itemNumList" item="itemNum" open="(" separator="," close=")">
+        #{itemNum}
+    </foreach>
+	</select> -->
+	<insert id="addDeliverAddr">
+		insert into deliverAddr(addrName,zipCode,userAddr,detailAddr,email,defaultWhether)) 
+		values(#{addrName},#{zipCode},#{userAddr},#{detailAddr},#{email},#{defaultWhether})
+	</insert>
+	<select id="getCoupon" resultType="com.shard.domain.CouponIssuanceVO">
+		select * from couponIssuance where email = #{email}
+	</select>
+	<select id="getDiscount" resultType="com.shard.domain.CouponVO">
+		select couponName, discountRate, discountAmount, minAmount from coupon
+		where couponNum IN
+    <foreach collection="couponNumList" item="couponNum" open="(" separator="," close=")">
+        #{couponNum}
+    </foreach>
+	</select>
+	
+	<!-- 주문취소 -->
+	<delete id="ordersDelete">
+		delete from orders where orderId = #{orderId}
+	</delete>
+	<delete id="detailOrdersDelete">
+		delete from detailorder where orderId = #{orderId}
+	</delete>
+	<update id="payCompleteUpdate">
+		update pay set payComplete = 0
+	</update>
+</mapper>
