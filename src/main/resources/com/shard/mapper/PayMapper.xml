@@ -10,29 +10,26 @@
 	
 	<!-- 결제성공 -->
 	<delete id="cartDelete">
-		delete from detailcart where cartNum = #{cartNum} and itemNum IN 
+		delete from detailcart 
+		where cartNum = #{cartNum} and itemNum IN 
 		<foreach collection="itemNumList" item="itemNum" open="(" separator="," close=")">
         #{itemNum}
     	</foreach>
 	</delete>
 	<update id="useCouponIssuanceUpdate">
-		update couponIssuance set orderId = #{orderId} where issueNum = #{issueNum}
+		update couponIssuance set orderId = #{orderId} 
+		where issueNum = #{issueNum}
 	</update>
 	<update id="payCompleteUpdate">
-		update pay set payComplete = 1 where orderId = #{orderId}
+		update pay set payComplete = 1 
+		where orderId = #{orderId}
 	</update>
 	<update id="ordersUpdate">
-		update orders set usePoint = #{usePoint}, orderComplete = 1 where orderId = #{orderId}
+		update orders set usePoint = #{usePoint}, orderComplete = 1 
+		where orderId = #{orderId}
 	</update>
 	<update id="customerPointUpdate">
 		update customer set point = point - #{usedpoint} where email = #{email}
 	</update>
-	<select id="getTotalAmountForLast3Months" resultType="int">
-	    select SUM(totalPrice) AS totalAmount
-	    from orders
-	    where email = #{email} and orderComplete = 0 and orderDate >= (CURDATE() - INTERVAL 3 MONTH);
-	</select>
-	<update id="membershipUpdate">
-		update customer set memNum = #{memNum} where email = #{email}
-	</update>
+
 </mapper>

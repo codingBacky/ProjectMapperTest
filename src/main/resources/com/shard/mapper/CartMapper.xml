@@ -6,7 +6,7 @@
 <mapper namespace="com.shard.mapper.CartMapper">
 
 	<!-- 장바구니, 장바구니상세 -->
-	<select id="getCartnum" resultType="String">
+	<select id="getCartnum" resultType="int">
 		select cartNum from cart where email = #{email}
 	</select>
 	<update id="detailCartCntInitUpdate">
@@ -18,13 +18,26 @@
 	<insert id="detailCartInsert">
 		insert into detailcart(itemNum, cartNum, size) values(#{itemNum},#{cartNum},#{size})
 	</insert>
+	<select id="getItemNums" resultType="int">
+	select itemNum from detailcart where cartNum = #{cartNum}
+	</select>
 	<!-- 장바구니, 장바구니상세 List -->
 	<select id="getDetailCart" resultType="com.shard.domain.DetailCartVO">
 		select * from detailcart where cartNum = #{cartNum}
 	</select>
+	<select id="getDetailOrderItems" resultType="com.shard.domain.ItemVO">
+	    select * from item
+	    where itemNum IN
+    <foreach collection="itemNumList" item="itemNum" open="(" separator="," close=")">
+        #{itemNum}
+    </foreach>
+	</select>
 	<!-- 금액산출 -->
-	<select id="getMembership" resultType="String">
+	<select id="getMembership" resultType="int">
 		select memNum from customer where email = #{email}
+	</select>
+	<select id="getPointRate" resultType="int">
+		select pointRate from membership where memNum = #{memNum}
 	</select>
 	<!-- 수량변경 -->
 	<update id="detailCartCntUpdate">

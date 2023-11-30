@@ -60,8 +60,13 @@ public class PayMapperTests {
 		mapper.customerPointUpdate(1000,"email15@gmail.com");
 	}
 	
-	@Test
-	public void getTotalAmountForLast3Months() {
-		mapper.getTotalAmountForLast3Months("email15@gmail.com");
-	}
+//	@Test
+//	public void getTotalAmountForLast3Months() {
+//		mapper.getTotalAmountForLast3Months("email15@gmail.com");
+//	}
+//	
+//	@Test
+//	public void membershipUpdate() {
+//		mapper.membershipUpdate(1,"email15@gmail.com");
+//	}
 }

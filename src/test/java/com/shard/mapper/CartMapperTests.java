@@ -21,7 +21,8 @@ public class CartMapperTests {
 
 	@Test
 	public void getCartnum() {
-		mapper.getCartnum("email10@gmail.com");
+		mapper.getCartnum("email14@gmail.com");
+		log.info("+_+_+_+_+_+"+mapper.getCartnum("email14@gmail.com"));
 	}
 	@Test
 	public void detailCartCntInitUpdate() {

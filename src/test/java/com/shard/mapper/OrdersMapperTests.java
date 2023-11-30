@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.shard.domain.DeliverAddrVO;
 import com.shard.domain.DetailOrderVO;
+import com.shard.domain.OrdersVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -24,7 +25,17 @@ public class OrdersMapperTests {
 
 	@Test
 	public void orderInsert() {
-		mapper.orderInsert(10000, "email14@gmail.com");
+		OrdersVO ovo = OrdersVO.builder()
+				.totalPrice(200000)
+				.deliverZipCode(18888)
+				.userDeliverAddr("수원시 영통구 영통동")
+				.email("email15@gmail.com")
+				.usePoint(5000)
+				.deliverDetailAddr("동남아파트 101동 2001호")
+				.deliverName("김미미")
+				.deliverPhone("01099992222")
+				.build();
+		mapper.orderInsert(ovo);
 		log.info(mapper.getLastInsertId());
 	}
 	@Test
@@ -32,7 +43,7 @@ public class OrdersMapperTests {
 		DetailOrderVO dvo = DetailOrderVO.builder()
 				.itemNum(1)
 				.cnt(2)
-				.orderId(1)
+				.orderId(4)
 				.size("S")
 				.build();
 				
@@ -44,17 +55,16 @@ public class OrdersMapperTests {
 	}
 	@Test
 	public void getDetailOrder() {
-		mapper.getDetailOrder(1);
+		mapper.getDetailOrder(3);
 	}
 	@Test
-	public void getDetailOrderItem() {
+	public void getDetailOrderItems() {
 		List<Integer> list = new ArrayList<Integer>();
 		list.add(4);
 		list.add(5);
 		list.add(6);
-		mapper.getDetailOrderItem(list);
+		mapper.getDetailOrderItems(list);
 	}
-	
 	
 	@Test
 	public void addDeliverAddr() {
@@ -63,10 +73,22 @@ public class OrdersMapperTests {
 				.zipCode(19999)
 				.userAddr("경기도 수원시 인계동")
 				.detailAddr("에스팝타워 101동 111호")
-				.email("email15@gmail.com")
-				.defaultWhether(1)
+				.email("email17@gmail.com")
+				.defaultWhether(0)
 				.build();
 		mapper.addDeliverAddr(dvo);
+	}
+	
+	@Test
+	public void deliverAddrUpdate() {
+		DeliverAddrVO dvo = DeliverAddrVO.builder()
+				.addrName("우리집")
+				.zipCode(19999)
+				.userAddr("경기도 수원시 인계동")
+				.detailAddr("에스팝타워 101동 111호")
+				.defaultWhether(0)
+				.build();
+		mapper.deliverAddrUpdate(dvo, 2);
 	}
 	
 	@Test
@@ -89,6 +111,14 @@ public class OrdersMapperTests {
 	@Test
 	public void ordersDelete() {
 		mapper.ordersDelete(2);
+	}
+	@Test
+	public void getDefaultAddress() {
+		mapper.getDefaultAddress("email15@gmail.com");
+	}
+	@Test
+	public void defaultAddressUpdate() {
+		mapper.defaultAddressUpdate(2);
 	}
 	
 	

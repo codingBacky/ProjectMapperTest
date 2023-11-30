@@ -21,10 +21,11 @@ public class OrdersVO {
 	private int totalPrice;
 	private Date ordDate;
 	private String req;
-	private String deliverZipCode;
+	private int deliverZipCode;
 	private String userDeliverAddr;
 	private int usePoint;
 	private String email;
+	private String deliverDetailAddr;
 	private String deliverName;
 	private String deliverPhone;
 	private int orderComplete;
